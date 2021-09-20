@@ -115,8 +115,8 @@ while e ~= 0 % executes while the total error is not 0
     b = b + n*err;
     % calculate the total error
     e = e + abs(err);
-    iterationNum = iterationNum + 1;
     end
+    iterationNum = iterationNum + 1;
 end
 disp(['Iteration number: ', num2str(iterationNum)]);
 
@@ -132,9 +132,9 @@ for i = 1:5
     % calculate the error value
     err = T(i) - y;
     if err ~= 0
-        disp('Incorrect classification');
+        disp('Incorrect classification (perceptron)');
     else
-        disp('Correct classification');
+        disp('Correct classification (perceptron)');
     end
 end
 
@@ -155,9 +155,9 @@ for i = 1:8
     % calculate the error value
     err = T_new(i) - y;
     if err ~= 0
-        disp('Incorrect classification');
+        disp('Incorrect classification (perceptron)');
     else
-        disp('Correct classification');
+        disp('Correct classification (perceptron)');
     end
 end
 
@@ -190,8 +190,8 @@ v_p = v_pears / (v_apples + v_pears);
 % calculate the error value
     err = T(i) - y; 
     if err ~= 0
-        disp('Incorrect classification2');
+        disp('Incorrect classification (Bayes)');
     else
-        disp('Correct classification2');
+        disp('Correct classification (Bayes)');
     end
 end
