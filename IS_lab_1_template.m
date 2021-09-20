@@ -95,7 +95,7 @@ for i = 1:5
 end
 
 %% Training algorithm
-n = 0.1; % eta coefficient
+n = 0.2; % eta coefficient
 iterationNum = 0;
 while e ~= 0 % executes while the total error is not 0
     e = 0;
@@ -162,3 +162,36 @@ for i = 1:8
 end
 
 %% Additional task - Naive Bayes Classifier
+%selecting features(color, roundness, 9 apples and 4 pears)
+%A1,A2,A3,P1,P2
+x1 = [hsv_value_A1 hsv_value_A2 hsv_value_A3 hsv_value_A4 hsv_value_A5 hsv_value_A6 hsv_value_A7 hsv_value_A8 hsv_value_A9 hsv_value_P1 hsv_value_P2 hsv_value_P3 hsv_value_P4];
+x2 = [metric_A1 metric_A2 metric_A3  metric_A5 metric_A6 metric_A7 metric_A8 metric_A9 metric_P1 metric_P2 metric_P3 metric_P4];
+% prior probabilities
+p1 = 9/13; % apples probability
+p2 = 4/13; % pears probability
+p_color_apples = [1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9 0 0 0 0];
+p_roundness_apples = [1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9 0 0 0 0];
+p_color_pears = [0 0 0 0 0 0 0 0 0 1/4 1/4 1/4 1/4];
+p_roundness_pears = [0 0 0 0 0 0 0 0 0 1/4 1/4 1/4 1/4];
+%Desired output vector
+T=[1;1;1;1;1;1;1;1;1;-1;-1;-1;-1];
+
+for i = 1:13
+v_apples = p1 * p_color_apples(i) * p_roundness_apples(i);
+v_pears = p2 * p_color_pears(i) * p_roundness_pears(i);
+v_a = v_apples / (v_apples + v_pears);
+v_p = v_pears / (v_apples + v_pears);
+% calculate current output 
+    if v_a > v_p
+        y = 1;
+    else
+        y = -1;
+    end 
+% calculate the error value
+    err = T(i) - y; 
+    if err ~= 0
+        disp('Incorrect classification2');
+    else
+        disp('Correct classification2');
+    end
+end
