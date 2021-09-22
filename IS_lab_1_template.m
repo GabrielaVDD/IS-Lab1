@@ -18,8 +18,7 @@ P2=imread('pear_02.jpg');
 P3=imread('pear_03.jpg');
 P4=imread('pear_09.jpg');
 
-%Calculate for each image, colour and roundness
-%For Apples
+%Training data
 %1st apple image(A1)
 hsv_value_A1=spalva_color(A1); %color
 metric_A1=apvalumas_roundness(A1); %roundness
@@ -29,6 +28,14 @@ metric_A2=apvalumas_roundness(A2); %roundness
 %3rd apple image(A3)
 hsv_value_A3=spalva_color(A3); %color
 metric_A3=apvalumas_roundness(A3); %roundness
+%1st pear image(P1)
+hsv_value_P1=spalva_color(P1); %color
+metric_P1=apvalumas_roundness(P1); %roundness
+%2nd pear image(P2)
+hsv_value_P2=spalva_color(P2); %color
+metric_P2=apvalumas_roundness(P2); %roundness
+
+% Testing data
 %4th apple image(A4)
 hsv_value_A4=spalva_color(A4); %color
 metric_A4=apvalumas_roundness(A4); %roundness
@@ -48,13 +55,6 @@ metric_A8=apvalumas_roundness(A8); %roundness
 hsv_value_A9=spalva_color(A9); %color
 metric_A9=apvalumas_roundness(A9); %roundness
 
-%For Pears
-%1st pear image(P1)
-hsv_value_P1=spalva_color(P1); %color
-metric_P1=apvalumas_roundness(P1); %roundness
-%2nd pear image(P2)
-hsv_value_P2=spalva_color(P2); %color
-metric_P2=apvalumas_roundness(P2); %roundness
 %3rd pear image(P3)
 hsv_value_P3=spalva_color(P3); %color
 metric_P3=apvalumas_roundness(P3); %roundness
@@ -62,11 +62,10 @@ metric_P3=apvalumas_roundness(P3); %roundness
 hsv_value_P4=spalva_color(P4); %color
 metric_P4=apvalumas_roundness(P4); %roundness
 
-%selecting features(color, roundness, 3 apples and 2 pears)
+%Features
 %A1,A2,A3,P1,P2
 x1=[hsv_value_A1 hsv_value_A2 hsv_value_A3 hsv_value_P1 hsv_value_P2];
 x2=[metric_A1 metric_A2 metric_A3 metric_P1 metric_P2];
-% estimated features are stored in matrix P:
 P=[x1;x2];
 
 %Desired output vector
@@ -138,7 +137,7 @@ for i = 1:5
     end
 end
 
-%% Testing on new data
+%% Testing on testing data
 x1_new=[hsv_value_A4 hsv_value_A5 hsv_value_A6 hsv_value_A7 hsv_value_A8 hsv_value_A9 hsv_value_P3 hsv_value_P4];
 x2_new=[metric_A4 metric_A5 metric_A6 metric_A7 metric_A8 metric_A9 metric_P3 metric_P4];
 %Desired output vector
@@ -164,19 +163,19 @@ end
 %% Additional task - Naive Bayes Classifier
 %selecting features(color, roundness, 9 apples and 4 pears)
 %A1,A2,A3,P1,P2
-x1 = [hsv_value_A1 hsv_value_A2 hsv_value_A3 hsv_value_A4 hsv_value_A5 hsv_value_A6 hsv_value_A7 hsv_value_A8 hsv_value_A9 hsv_value_P1 hsv_value_P2 hsv_value_P3 hsv_value_P4];
-x2 = [metric_A1 metric_A2 metric_A3  metric_A5 metric_A6 metric_A7 metric_A8 metric_A9 metric_P1 metric_P2 metric_P3 metric_P4];
+x1 = [hsv_value_A1 hsv_value_A2 hsv_value_A3 hsv_value_P1 hsv_value_P2];
+x2 = [metric_A1 metric_A2 metric_A3 metric_P1 metric_P2];
 % prior probabilities
-p1 = 9/13; % apples probability
-p2 = 4/13; % pears probability
-p_color_apples = [1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9 0 0 0 0];
-p_roundness_apples = [1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9 0 0 0 0];
-p_color_pears = [0 0 0 0 0 0 0 0 0 1/4 1/4 1/4 1/4];
-p_roundness_pears = [0 0 0 0 0 0 0 0 0 1/4 1/4 1/4 1/4];
+p1 = 3/5; % apples probability
+p2 = 2/5; % pears probability
+p_color_apples = [1/3 1/3 1/3 0 0];
+p_roundness_apples = [1/3 1/3 1/3 0 0];
+p_color_pears = [0 0 0 1/2 1/2];
+p_roundness_pears = [0 0 0 1/2 1/2];
 %Desired output vector
-T=[1;1;1;1;1;1;1;1;1;-1;-1;-1;-1];
+T=[1;1;1;-1;-1];
 
-for i = 1:13
+for i = 1:length(T)
 v_apples = p1 * p_color_apples(i) * p_roundness_apples(i);
 v_pears = p2 * p_color_pears(i) * p_roundness_pears(i);
 v_a = v_apples / (v_apples + v_pears);
